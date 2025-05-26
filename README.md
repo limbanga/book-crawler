@@ -1,58 +1,57 @@
 # Web Crawler JavaScript
 
-## Mục tiêu dự án
+## Project Objectives
 
-* Hiểu và thực hành kỹ thuật Web Crawling (thu thập dữ liệu web) cơ bản bằng JavaScript/Node.js.
-* Thu thập dữ liệu sách (tiêu đề, giá, ảnh bìa) từ trang demo [books.toscrape.com](http://books.toscrape.com).
-* Sử dụng các thư viện phổ biến: `axios` để gửi HTTP request, `cheerio` để phân tích HTML, `json2csv` để chuyển đổi dữ liệu.
-* Crawl dữ liệu nhiều trang liên tiếp và xử lý phân trang đơn giản.
-* Lưu dữ liệu ra định dạng JSON và CSV phục vụ cho việc phân tích hoặc xử lý sau này.
-* Nâng cao kỹ năng lập trình bất đồng bộ (async/await) và xử lý lỗi trong quá trình crawl.
-
----
-
-## Hướng dẫn tổng quan
-
-### 1. Khởi tạo project và cài đặt thư viện
-
-* Tạo project Node.js mới và cài đặt các thư viện cần thiết: `axios`, `cheerio`, `json2csv`.
-
-### 2. Xây dựng chức năng crawl dữ liệu
-
-* Gửi yêu cầu HTTP tới các trang sách.
-* Phân tích HTML để lấy dữ liệu sách (tiêu đề, giá, ảnh).
-* Xử lý phân trang bằng cách lặp qua nhiều trang với URL có dạng `page-1.html`, `page-2.html`,...
-
-### 3. Lưu dữ liệu
-
-* Gom dữ liệu thu thập được từ các trang lại.
-* Lưu dữ liệu ra file JSON để dễ dàng đọc và xử lý trong các ứng dụng.
-* Chuyển đổi dữ liệu sang định dạng CSV để dùng với Excel hoặc các phần mềm bảng tính.
-
-### 4. Chạy và kiểm tra
-
-* Chạy file script để bắt đầu crawl.
-* Kiểm tra kết quả trong các file JSON và CSV.
+* Understand and practice basic Web Crawling techniques using JavaScript/Node.js.
+* Collect book data (title, price, cover image) from the demo site [books.toscrape.com](http://books.toscrape.com).
+* Use popular libraries: `axios` for HTTP requests, `cheerio` for HTML parsing, and `json2csv` for data conversion.
+* Crawl multiple pages sequentially and handle simple pagination.
+* Save the collected data in JSON and CSV formats for later analysis or processing.
+* Improve skills in asynchronous programming (async/await) and error handling during crawling.
 
 ---
 
-## Giải thích kỹ thuật
+## Overview Guide
 
-* **HTTP request**: Dùng thư viện `axios` để lấy nội dung HTML từ website.
-* **Phân tích HTML**: Sử dụng `cheerio` để thao tác DOM như jQuery, dễ dàng trích xuất dữ liệu cần thiết.
-* **Chuyển đổi URL ảnh**: Đảm bảo đường dẫn ảnh là URL tuyệt đối để có thể sử dụng sau này.
-* **Xử lý phân trang**: Lặp qua các trang theo số thứ tự, dừng nếu không còn dữ liệu.
-* **Lưu file JSON và CSV**:
+### 1. Initialize the project and install libraries
 
-  * JSON: dễ đọc, lưu trữ cấu trúc dữ liệu gốc.
-  * CSV: dùng cho phân tích và báo cáo bằng Excel, Google Sheets.
+* Create a new Node.js project and install the necessary libraries: `axios`, `cheerio`, `json2csv`.
+
+### 2. Build the crawling functionality
+
+* Send HTTP requests to book pages.
+* Parse HTML to extract book data (title, price, image).
+* Handle pagination by looping through multiple pages with URLs like `page-1.html`, `page-2.html`, etc.
+
+### 3. Save data
+
+* Aggregate data collected from multiple pages.
+* Save data to JSON files for easy reading and further processing.
+* Convert data to CSV format for use with Excel or spreadsheet software.
+
+### 4. Run and verify
+
+* Run the script to start crawling.
+* Check results in the JSON and CSV output files.
 
 ---
 
-## Lưu ý và gợi ý nâng cao
+## Technical Explanation
 
-* Để tránh gửi quá nhiều request cùng lúc gây quá tải server, có thể thêm thời gian chờ (delay) giữa các lần crawl.
-* Nếu muốn crawl chi tiết từng cuốn sách, có thể truy cập link chi tiết của sách và lấy thêm thông tin.
-* Có thể tối ưu tốc độ crawl bằng cách thực hiện song song (parallel) nhiều request, nhưng cần cẩn thận không gây lỗi hoặc bị chặn.
-* Nên xử lý lỗi kỹ càng để chương trình không bị dừng giữa chừng khi gặp trang lỗi hoặc mất mạng.
+* **HTTP request**: Use `axios` library to fetch HTML content from the website.
+* **HTML parsing**: Use `cheerio` to manipulate the DOM like jQuery and easily extract necessary data.
+* **Image URL conversion**: Ensure image URLs are absolute so they can be used later.
+* **Pagination handling**: Loop through pages by page number, stop when no more data is found.
+* **Saving JSON and CSV files**:
 
+  * JSON: easy to read, stores raw data structure.
+  * CSV: suitable for analysis and reporting with Excel, Google Sheets.
+
+---
+
+## Notes and Advanced Suggestions
+
+* To avoid sending too many requests at once and overloading the server, add delays between crawl requests.
+* To crawl detailed info for each book, you can access each book’s detail page and extract more data.
+* You can optimize crawl speed by sending multiple requests in parallel, but be careful to avoid errors or getting blocked.
+* Implement thorough error handling so the program doesn’t stop unexpectedly when encountering errors or network issues.
