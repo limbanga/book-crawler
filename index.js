@@ -3,11 +3,12 @@ const cheerio = require('cheerio');
 const fs = require('fs');
 const { Parser } = require('json2csv');
 
-const BASE_URL = 'http://books.toscrape.com/';
+const BASE_URL = 'http://books.toscrape.com/catalogue/category/books_1/';
 
-async function crawlBooks() {
+async function crawlPage(pageNumber) {
   try {
-    const { data } = await axios.get(BASE_URL);
+    const url = `${BASE_URL}page-${pageNumber}.html`;
+    const { data } = await axios.get(url);
     const $ = cheerio.load(data);
 
     const books = [];
@@ -17,25 +18,42 @@ async function crawlBooks() {
       const price = $(element).find('.price_color').text();
       let imgUrl = $(element).find('img').attr('src');
 
-      // Chuyển URL ảnh thành đường dẫn đầy đủ
-      imgUrl = new URL(imgUrl, BASE_URL).href;
+      imgUrl = new URL(imgUrl, url).href;
 
       books.push({ title, price, imgUrl });
     });
 
-    // Lưu ra file JSON
-    fs.writeFileSync('books.json', JSON.stringify(books, null, 2));
-    console.log('Saved data to books.json');
-
-    // Lưu ra file CSV
-    const json2csvParser = new Parser();
-    const csv = json2csvParser.parse(books);
-    fs.writeFileSync('books.csv', csv);
-    console.log('Saved data to books.csv');
-
+    return books;
   } catch (error) {
-    console.error('Error:', error.message);
+    console.error(`Error crawling page ${pageNumber}:`, error.message);
+    return [];
   }
 }
 
-crawlBooks();
+async function crawlAllPages(startPage, endPage) {
+  let allBooks = [];
+
+  for (let page = startPage; page <= endPage; page++) {
+    console.log(`Crawling page ${page}...`);
+    const books = await crawlPage(page);
+
+    if (books.length === 0) {
+      console.log('No more books found, stopping crawl.');
+      break;
+    }
+
+    allBooks = allBooks.concat(books);
+  }
+
+  // Lưu file JSON
+  fs.writeFileSync('books.json', JSON.stringify(allBooks, null, 2));
+  console.log(`Saved ${allBooks.length} books to books.json`);
+
+  // Lưu file CSV
+  const json2csvParser = new Parser();
+  const csv = json2csvParser.parse(allBooks);
+  fs.writeFileSync('books.csv', csv);
+  console.log(`Saved ${allBooks.length} books to books.csv`);
+}
+
+crawlAllPages(1, 5);
